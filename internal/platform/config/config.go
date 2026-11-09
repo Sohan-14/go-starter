@@ -35,14 +35,9 @@ type HTTP struct {
 // Logger Format enum for LOG_FORMAT
 type Format string
 
-const (
-	FormatJSON Format = "json" // production default
-	FormatText Format = "text" // local development
-)
-
 // Logger holds logger config settings.
 type Logger struct {
-	LOG_LEVEL  slog.Level
-	LOG_FORMAT Format
-	AddSource  bool
+	LEVEL     slog.Level
+	FORMAT    string
+	AddSource bool
 }

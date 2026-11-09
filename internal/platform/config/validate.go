@@ -58,7 +58,7 @@ func (h *HTTP) validate() error {
 func (l *Logger) validate(environment string) error {
 	// In production, force the log format to be JSON for structured logging.
 	if environment == "production" {
-		if l.LOG_FORMAT != "json" {
+		if l.FORMAT != "json" {
 			return fmt.Errorf("%s=production: %s must be \"json\"", envAppEnrionment, envLogFormat)
 		}
 	}

@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/sohan-14/go-starter/internal/platform/config"
+	"github.com/sohan-14/go-starter/internal/platform/logger"
 )
 
 func main() {
@@ -13,6 +14,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
+
+	logger.Setup(cfg.Logger)
 
 	println(cfg.App.Envrionment)
 }
