@@ -19,6 +19,13 @@ API_PATH := ./cmd/api
 BIN_API_PATH := ./bin/api
 BIN_DIR := ./bin
 
+
+# Check if .env file exists and export its variables for local commands
+ifneq (,$(wildcard .env))
+    include .env
+    export
+endif
+
 # ==========================================
 # DEVELOPER COMMANDS
 # ==========================================
