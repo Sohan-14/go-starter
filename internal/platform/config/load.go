@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 )
 
 type getEnv func(string) string
@@ -14,8 +15,9 @@ func Load(getenv getEnv) (*Config, error) {
 	r := newReader(getenv)
 
 	cfg := &Config{
-		App:  loadApp(r),
-		Http: loadHTTP(r),
+		App:    loadApp(r),
+		Http:   loadHTTP(r),
+		Logger: loadLogger(r),
 	}
 
 	// Return any errors encountered while reading environment variables.
@@ -55,6 +57,24 @@ func loadHTTP(r *reader) *HTTP {
 			r,
 			envHTTPAddr,
 			":8080",
+			asString,
+		),
+	}
+}
+
+// loadLogger loads Logger configuration
+func loadLogger(r *reader) *Logger {
+	return &Logger{
+		LOG_LEVEL: optional(
+			r,
+			envLogLevel,
+			slog.LevelDebug,
+			asLevel,
+		),
+		LOG_FORMAT: optional(
+			r,
+			envLogFormat,
+			"text",
 			asString,
 		),
 	}

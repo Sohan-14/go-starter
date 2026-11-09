@@ -19,6 +19,10 @@ func (c *Config) validate() error {
 		errs = append(errs, err)
 	}
 
+	if err := c.Logger.validate(c.App.Envrionment); err != nil {
+		errs = append(errs, err)
+	}
+
 	if len(errs) > 0 {
 		return errors.Join(errs...)
 	}
@@ -47,5 +51,16 @@ func (h *HTTP) validate() error {
 		return fmt.Errorf("%s: port %q must be a number from 0 to 65535", envHTTPAddr, port)
 	}
 
+	return nil
+}
+
+// validate ensures logger configuration complies with environment-specific business rules.
+func (l *Logger) validate(environment string) error {
+	// In production, force the log format to be JSON for structured logging.
+	if environment == "production" {
+		if l.LOG_FORMAT != "json" {
+			return fmt.Errorf("%s=production: %s must be \"json\"", envAppEnrionment, envLogFormat)
+		}
+	}
 	return nil
 }
