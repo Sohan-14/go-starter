@@ -1,0 +1,79 @@
+# ==========================================
+# BINARIES & BUILD ARTIFACTS
+# ==========================================
+# Compiled executable files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Common build output directories
+bin/
+dist/
+out/
+build/
+
+# ==========================================
+# ENVIRONMENT & SECRETS
+# ==========================================
+# Never commit local environment files or secrets
+.env
+.env.*
+!.env.example
+
+# Certificates and private keys
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+*.cer
+
+# ==========================================
+# IDES & EDITORS
+# ==========================================
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains (GoLand, IntelliJ, etc.)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim / Emacs / General editor swap files
+*.swp
+*.swo
+*~
+.\#*
+\#*#
+
+# ==========================================
+# OS SPECIFIC FILES
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+.Trash-*
+
+# ==========================================
+# LOGS & TEMPORARY FILES
+# ==========================================
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.bak
