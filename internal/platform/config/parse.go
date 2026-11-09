@@ -4,11 +4,17 @@ import (
 	"fmt"
 	"log/slog"
 	"slices"
+	"strconv"
 )
 
 // asString returns the string value as-is without modification.
 func asString(s string) (string, error) {
 	return s, nil
+}
+
+// asBool parses a string representation into a bool.
+func asBool(s string) (bool, error) {
+	return strconv.ParseBool(s)
 }
 
 // asLevel parses a string representation into a slog.Level.

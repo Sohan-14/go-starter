@@ -74,8 +74,14 @@ func loadLogger(r *reader) *Logger {
 		LOG_FORMAT: optional(
 			r,
 			envLogFormat,
-			"text",
-			asString,
+			FormatText,
+			oneOf(FormatJSON, FormatText),
+		),
+		AddSource: optional(
+			r,
+			envAddSource,
+			false,
+			asBool,
 		),
 	}
 }

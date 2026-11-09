@@ -12,12 +12,13 @@ const envHTTPAddr = "HTTP_ADDR"
 const (
 	envLogLevel  = "LOG_LEVEL"
 	envLogFormat = "LOG_FORMAT"
+	envAddSource = "LOG_ADD_SOURCE"
 )
 
 // Config holds all configuration sections for the application.
 type Config struct {
-	App  *APP
-	Http *HTTP
+	App    *APP
+	Http   *HTTP
 	Logger *Logger
 }
 
@@ -31,8 +32,17 @@ type HTTP struct {
 	Addr string
 }
 
+// Logger Format enum for LOG_FORMAT
+type Format string
+
+const (
+	FormatJSON Format = "json" // production default
+	FormatText Format = "text" // local development
+)
+
 // Logger holds logger config settings.
 type Logger struct {
 	LOG_LEVEL  slog.Level
-	LOG_FORMAT string
+	LOG_FORMAT Format
+	AddSource  bool
 }
