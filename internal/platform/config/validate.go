@@ -84,6 +84,8 @@ func (db *Database) validate(environment string) error {
 		positive(envDBConnectTimeout, db.ConnectTimeout),
 		positive(envDBStartupTimeout, db.StartupTimeout),
 		positive(envDBStatementTimeout, db.StatementTimeout),
+		positive(envDBHealthCheckPeriod, db.HealthCheckPeriod),
+		positive(envDBReadinessTimeout, db.ReadinessTimeout),
 	}
 
 	if db.MaxConns < 1 || db.MaxConns > maxPoolConns {

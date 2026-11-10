@@ -30,14 +30,16 @@ const (
 
 // Environment variable keys for database config settings.
 const (
-	envDBURL              = "DATABASE_URL"
-	envDBMaxConns         = "DB_MAX_CONNS"
-	envDBMinConns         = "DB_MIN_CONNS"
-	envDBMaxConnLifetime  = "DB_MAX_CONN_LIFETIME"
-	envDBMaxConnIdleTime  = "DB_MAX_CONN_IDLE_TIME"
-	envDBConnectTimeout   = "DB_CONNECT_TIMEOUT"
-	envDBStartupTimeout   = "DB_STARTUP_TIMEOUT"
-	envDBStatementTimeout = "DB_STATEMENT_TIMEOUT"
+	envDBURL               = "DATABASE_URL"
+	envDBMaxConns          = "DB_MAX_CONNS"
+	envDBMinConns          = "DB_MIN_CONNS"
+	envDBMaxConnLifetime   = "DB_MAX_CONN_LIFETIME"
+	envDBMaxConnIdleTime   = "DB_MAX_CONN_IDLE_TIME"
+	envDBConnectTimeout    = "DB_CONNECT_TIMEOUT"
+	envDBStartupTimeout    = "DB_STARTUP_TIMEOUT"
+	envDBHealthCheckPeriod = "DB_HEALTH_CHECK_PERIOD"
+	envDBReadinessTimeout = "DB_READINESS_TIMEOUT"
+	envDBStatementTimeout  = "DB_STATEMENT_TIMEOUT"
 )
 
 // Config holds all configuration sections for the application.
@@ -75,12 +77,14 @@ type Logger struct {
 
 // Database holds database config settings.
 type Database struct {
-	URL              string
-	MaxConns         int
-	MinConns         int
-	MaxConnLifetime  time.Duration
-	MaxConnIdleTime  time.Duration
-	ConnectTimeout   time.Duration
-	StartupTimeout   time.Duration
-	StatementTimeout time.Duration
+	URL               string
+	MaxConns          int
+	MinConns          int
+	MaxConnLifetime   time.Duration
+	MaxConnIdleTime   time.Duration
+	HealthCheckPeriod time.Duration
+	ReadinessTimeout time.Duration
+	ConnectTimeout    time.Duration
+	StartupTimeout    time.Duration
+	StatementTimeout  time.Duration
 }

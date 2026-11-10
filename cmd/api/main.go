@@ -2,13 +2,16 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/sohan-14/go-starter/internal/platform/config"
+	"github.com/sohan-14/go-starter/internal/platform/database"
 	"github.com/sohan-14/go-starter/internal/platform/logger"
 	"github.com/sohan-14/go-starter/internal/platform/middleware"
 	"github.com/sohan-14/go-starter/internal/platform/server"
@@ -24,14 +27,28 @@ func main() {
 
 	log := logger.Setup(cfg.Logger)
 
-	srv := server.New(cfg.HTTP, log)
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
+	if err := run(ctx, cfg, log); err != nil {
+		log.Error("application stopped with error", "error", err)
+		os.Exit(1)
+	}
+
+	log.Info("application stopped gracefully")
+}
+
+func run(ctx context.Context, cfg *config.Config, log *slog.Logger) error {
+	db, err := database.New(ctx, cfg.Database, log, "go-starter")
+	if err != nil {
+		return fmt.Errorf("initialize database: %w", err)
+	}
+	defer db.Close()
+
+	srv := server.New(cfg.HTTP, log)
 	registerRoutes(srv)
 
 	srv.ApplyMiddleware(middleware.Standard(log))
-
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-	defer stop()
 
 	log.InfoContext(ctx, "application starting", "environment", cfg.App.Envrionment)
 
@@ -40,14 +57,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	log.Info("application stopped gracefully")
+	return nil
 }
-
-// ApplyMiddleware wraps the internal mux with a middleware chain.
-// Call this after all routes are registered and before Run.
-// func (s *Server) ApplyMiddleware(wrapper func(http.Handler) http.Handler) {
-// 	s.httpServer.Handler = wrapper(s.mux)
-// }
 
 // registerRoutes attaches infrastructure and health check endpoints to the server.
 // This keeps transport concerns (server) separate from routing concerns (main).
