@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"slices"
 	"strconv"
+	"time"
 )
 
 // asString returns the string value as-is without modification.
@@ -15,6 +16,16 @@ func asString(s string) (string, error) {
 // asBool parses a string representation into a bool.
 func asBool(s string) (bool, error) {
 	return strconv.ParseBool(s)
+}
+
+// asInt64 parses a string representation into a int64.
+func asInt64(s string) (int64, error) {
+	return strconv.ParseInt(s, 10, 64)
+}
+
+// asDuration parses a string representation into a time.Duration.
+func asDuration(s string) (time.Duration, error) {
+	return time.ParseDuration(s)
 }
 
 // asLevel parses a string representation into a slog.Level.
