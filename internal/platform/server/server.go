@@ -61,6 +61,12 @@ func (s *Server) IsDraining() bool {
 	return s.draining.Load()
 }
 
+// ApplyMiddleware wraps the internal mux with a middleware chain.
+// Call this after all routes are registered and before Run.
+func (s *Server) ApplyMiddleware(wrapper func(http.Handler) http.Handler) {
+	s.httpServer.Handler = wrapper(s.mux)
+}
+
 // Run binds the TCP port and starts the server.
 // Binding synchronously ensures we fail fast if the port is already in use.
 func (s *Server) Run(ctx context.Context) error {
@@ -68,12 +74,12 @@ func (s *Server) Run(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("listen %s: %w", s.httpServer.Addr, err)
 	}
-	return s.Serve(ctx, ln)
+	return s.serve(ctx, ln)
 }
 
 // Serve starts the HTTP server on the provided listener and blocks until
 // the context is canceled or the server crashes.
-func (s *Server) Serve(ctx context.Context, ln net.Listener) error {
+func (s *Server) serve(ctx context.Context, ln net.Listener) error {
 	errCh := make(chan error, 1)
 
 	go func() {

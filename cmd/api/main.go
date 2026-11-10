@@ -10,6 +10,7 @@ import (
 
 	"github.com/sohan-14/go-starter/internal/platform/config"
 	"github.com/sohan-14/go-starter/internal/platform/logger"
+	"github.com/sohan-14/go-starter/internal/platform/middleware"
 	"github.com/sohan-14/go-starter/internal/platform/server"
 )
 
@@ -27,6 +28,8 @@ func main() {
 
 	registerRoutes(srv)
 
+	srv.ApplyMiddleware(middleware.Standard(log))
+
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
@@ -39,6 +42,12 @@ func main() {
 
 	log.Info("application stopped gracefully")
 }
+
+// ApplyMiddleware wraps the internal mux with a middleware chain.
+// Call this after all routes are registered and before Run.
+// func (s *Server) ApplyMiddleware(wrapper func(http.Handler) http.Handler) {
+// 	s.httpServer.Handler = wrapper(s.mux)
+// }
 
 // registerRoutes attaches infrastructure and health check endpoints to the server.
 // This keeps transport concerns (server) separate from routing concerns (main).
