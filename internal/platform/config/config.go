@@ -38,7 +38,7 @@ const (
 	envDBConnectTimeout    = "DB_CONNECT_TIMEOUT"
 	envDBStartupTimeout    = "DB_STARTUP_TIMEOUT"
 	envDBHealthCheckPeriod = "DB_HEALTH_CHECK_PERIOD"
-	envDBReadinessTimeout = "DB_READINESS_TIMEOUT"
+	envDBReadinessTimeout  = "DB_READINESS_TIMEOUT"
 	envDBStatementTimeout  = "DB_STATEMENT_TIMEOUT"
 )
 
@@ -70,8 +70,8 @@ type HTTP struct {
 
 // Logger holds logger config settings.
 type Logger struct {
-	LEVEL     slog.Level
-	FORMAT    string
+	Level     slog.Level
+	Format    string
 	AddSource bool
 }
 
@@ -83,7 +83,7 @@ type Database struct {
 	MaxConnLifetime   time.Duration
 	MaxConnIdleTime   time.Duration
 	HealthCheckPeriod time.Duration
-	ReadinessTimeout time.Duration
+	ReadinessTimeout  time.Duration
 	ConnectTimeout    time.Duration
 	StartupTimeout    time.Duration
 	StatementTimeout  time.Duration

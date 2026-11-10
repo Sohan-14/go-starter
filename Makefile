@@ -1,12 +1,12 @@
-# ==========================================
-# PHONY TARGETS
-# ==========================================
+# ====================================================================================
+# PHONY TARGETS AND SILENT
+# ====================================================================================
 
-.PHONY: all help run build test check fmt vet tidy clean
-
-# ==========================================
+.PHONY: help run build test fmt-check vet check fmt tidy clean migrate-up migrate-down migrate-status migrate-create
+.SILENT:
+# ====================================================================================
 # VARIABLES
-# ==========================================
+# ====================================================================================
 
 # Colors for help output
 BLUE := \033[36m
@@ -18,6 +18,7 @@ APP_NAME := go-starter
 API_PATH := ./cmd/api
 BIN_API_PATH := ./bin/api
 BIN_DIR := ./bin
+MIGRATE_PATH := ./cmd/migrate
 
 
 # Check if .env file exists and export its variables for local commands
@@ -26,9 +27,9 @@ ifneq (,$(wildcard .env))
     export
 endif
 
-# ==========================================
+# ====================================================================================
 # DEVELOPER COMMANDS
-# ==========================================
+# ====================================================================================
 
 # Show available commands
 help:
@@ -56,9 +57,9 @@ test:
 	@echo "$(YELLOW)Start testing $(APP_NAME):$(RESET)"
 	go test -race -cover ./...
 
-# ==========================================
+# ====================================================================================
 # QUALITY GATES (CI & LOCAL)
-# ==========================================
+# ====================================================================================
 
 # Check formatting without modifying files (fails if unformatted)
 fmt-check:
@@ -81,11 +82,33 @@ fmt:
 tidy:
 	go mod tidy
 
-# ==========================================
+# ====================================================================================
 # CLEANUP
-# ==========================================
+# ====================================================================================
 
 # Remove build artifacts and test cache
 clean:
 	rm -rf $(BIN_DIR)
 	go clean -testcache
+
+
+# ====================================================================================
+# Migrations
+# ====================================================================================
+
+migrate-up:
+	@echo "$(GREEN)Starting migration by goose:$(RESET)"
+	go run $(MIGRATE_PATH) up
+
+migrate-down:
+	@echo "$(YELLOW)Starting migration down by goose:$(RESET)"
+	go run $(MIGRATE_PATH) down
+
+migrate-status:
+	@echo "$(GREEN)Checking migration status by goose:$(RESET)"
+	go run $(MIGRATE_PATH) status
+
+migrate-create:
+	@if [ -z "$(name)" ]; then echo "Usage: make migrate-create name=migration_name"; exit 1; fi
+	@echo "$(YELLOW)Creating a migration file by goose:$(RESET)"
+	@goose -s -dir migrations create $(name) sql

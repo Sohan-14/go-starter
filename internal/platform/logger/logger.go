@@ -11,12 +11,12 @@ import (
 func new(logger *config.Logger) *slog.Logger {
 	opts := &slog.HandlerOptions{
 		AddSource: logger.AddSource,
-		Level:     logger.LEVEL,
+		Level:     logger.Level,
 	}
 
 	var handler slog.Handler
 
-	switch logger.FORMAT {
+	switch logger.Format {
 	case "text":
 		handler = slog.NewTextHandler(os.Stdout, opts)
 	case "json":

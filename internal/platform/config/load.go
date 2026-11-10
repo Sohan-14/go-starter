@@ -66,8 +66,8 @@ func loadHTTP(r *reader) *HTTP {
 // loadLogger loads Logger configuration
 func loadLogger(r *reader) *Logger {
 	return &Logger{
-		LEVEL:     optional(r, envLogLevel, slog.LevelDebug, asLevel),
-		FORMAT:    optional(r, envLogFormat, "text", oneOf("json", "text")),
+		Level:     optional(r, envLogLevel, slog.LevelDebug, asLevel),
+		Format:    optional(r, envLogFormat, "text", oneOf("json", "text")),
 		AddSource: optional(r, envAddSource, false, asBool),
 	}
 }
