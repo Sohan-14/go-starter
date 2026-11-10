@@ -18,6 +18,11 @@ func asBool(s string) (bool, error) {
 	return strconv.ParseBool(s)
 }
 
+// asInt parses a string representation into a int.
+func asInt(s string) (int, error) {
+	return strconv.Atoi(s)
+}
+
 // asInt64 parses a string representation into a int64.
 func asInt64(s string) (int64, error) {
 	return strconv.ParseInt(s, 10, 64)

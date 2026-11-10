@@ -17,8 +17,9 @@ func Load(getenv getEnv) (*Config, error) {
 
 	cfg := &Config{
 		App:    loadApp(r),
-		Http:   loadHTTP(r),
+		HTTP:   loadHTTP(r),
 		Logger: loadLogger(r),
+		Database: loadDatabase(r),
 	}
 
 	// Return any errors encountered while reading environment variables.
@@ -68,5 +69,19 @@ func loadLogger(r *reader) *Logger {
 		LEVEL:     optional(r, envLogLevel, slog.LevelDebug, asLevel),
 		FORMAT:    optional(r, envLogFormat, "text", oneOf("json", "text")),
 		AddSource: optional(r, envAddSource, false, asBool),
+	}
+}
+
+// loadDatabase loads database configuration
+func loadDatabase(r *reader) *Database {
+	return &Database{
+		URL:              required(r, envDBURL, asString),
+		MaxConns:         optional(r, envDBMaxConns, 10, asInt),
+		MinConns:         optional(r, envDBMinConns, 0, asInt),
+		MaxConnLifetime:  optional(r, envDBMaxConnLifetime, 30*time.Minute, asDuration),
+		MaxConnIdleTime:  optional(r, envDBMaxConnIdleTime, 5*time.Minute, asDuration),
+		ConnectTimeout:   optional(r, envDBConnectTimeout, 5*time.Second, asDuration),
+		StartupTimeout:   optional(r, envDBStartupTimeout, 10*time.Second, asDuration),
+		StatementTimeout: optional(r, envDBStatementTimeout, 20*time.Second, asDuration),
 	}
 }

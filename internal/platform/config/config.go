@@ -28,11 +28,24 @@ const (
 	envAddSource = "LOG_ADD_SOURCE"
 )
 
+// Environment variable keys for database config settings.
+const (
+	envDBURL              = "DATABASE_URL"
+	envDBMaxConns         = "DB_MAX_CONNS"
+	envDBMinConns         = "DB_MIN_CONNS"
+	envDBMaxConnLifetime  = "DB_MAX_CONN_LIFETIME"
+	envDBMaxConnIdleTime  = "DB_MAX_CONN_IDLE_TIME"
+	envDBConnectTimeout   = "DB_CONNECT_TIMEOUT"
+	envDBStartupTimeout   = "DB_STARTUP_TIMEOUT"
+	envDBStatementTimeout = "DB_STATEMENT_TIMEOUT"
+)
+
 // Config holds all configuration sections for the application.
 type Config struct {
-	App    *APP
-	Http   *HTTP
-	Logger *Logger
+	App      *APP
+	HTTP     *HTTP
+	Logger   *Logger
+	Database *Database
 }
 
 // APP holds application-specific settings.
@@ -58,4 +71,16 @@ type Logger struct {
 	LEVEL     slog.Level
 	FORMAT    string
 	AddSource bool
+}
+
+// Database holds database config settings.
+type Database struct {
+	URL              string
+	MaxConns         int
+	MinConns         int
+	MaxConnLifetime  time.Duration
+	MaxConnIdleTime  time.Duration
+	ConnectTimeout   time.Duration
+	StartupTimeout   time.Duration
+	StatementTimeout time.Duration
 }

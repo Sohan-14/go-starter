@@ -24,7 +24,7 @@ func main() {
 
 	log := logger.Setup(cfg.Logger)
 
-	srv := server.New(cfg.Http, log)
+	srv := server.New(cfg.HTTP, log)
 
 	registerRoutes(srv)
 
